@@ -218,7 +218,7 @@ JiuGongGeII.prototype = {
         this.resData = {};
 
         var ajaxTimeoutTest = $.ajax({
-            url: '/url/advert_v2',
+            url: '/url/advert',
             type: "post",
             contentType: "application/json;",
             data: JSON.stringify(_this.collReqData()),
