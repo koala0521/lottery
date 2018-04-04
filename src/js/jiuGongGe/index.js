@@ -88,7 +88,7 @@ var click=false;
 
 window.JiuGongGeII = function(){
 
-    this.limitTimes = 8;     //允许转动的次数；
+    this.limitTimes = null;     //允许转动的次数；
     this.resData = null;
     this.netTypeArray = ["undefined", "ethernet", "wifi", "edge", "2g", "3g","4g"];
 
@@ -184,6 +184,7 @@ JiuGongGeII.prototype = {
                 device_id: deviceId,
                 timestamp: +new Date(),
             };
+            console.log( timesData );           
             $.ajax({
                 url: '/url/init',
                 type: "post",
@@ -229,6 +230,7 @@ JiuGongGeII.prototype = {
                     click = false;
                 }
                 _this.resData = XMLHttpRequest.responseJSON||{};
+                // 请求成功
                 if (_this.resData.error_code == 0) {
                     _this.limitTimes = _this.resData.limitTimes;
                 }

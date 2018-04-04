@@ -94,8 +94,8 @@
         <div id="hdgg_click_ad_btn" data-u="" class="m-btn">立即领取</div>
     </div>
     <div class="no-results prizes-no-cont" style="display: block;">
-        <img src="./dist/img/sudoku/prizes-pop-fail.png" class="prizes-no-img" alt="">
-        <img src="./dist/img/sudoku/close-btn.png" class="close-btn coupon-modal-close">
+        <img src="./dist/img/jiugongge/prizes-pop-fail.png" class="prizes-no-img" alt="">
+        <img src="./dist/img/jiugongge/close-btn.png" class="close-btn coupon-modal-close">
     </div>
     <div id="contaner" class="traceContaner" style="display: none;"></div>
 </div>
@@ -130,13 +130,32 @@
 
 <script>
 
-    // var _hmt = _hmt || [];
-    // (function() {
-    //     var hm = document.createElement("script");
-    //     hm.src = "https://hm.baidu.com/hm.js?a95ff97161599334035fb1f59a9b75a2";
-    //     var s = document.getElementsByTagName("script")[0];
-    //     s.parentNode.insertBefore(hm, s);
-    // })();
+    var _hmt = _hmt || [];
+    (function(){
+      
+        /**@argument  arg String;
+         * @value one of [ "testSrc" , "proSrc" ]
+         * @default "testSrc"
+         **/ 
+        function setEnv( arg ){
+
+            arg = arg || "testSrc";
+            var env = {
+                // 测试环境
+                "testSrc": "https://hm.baidu.com/hm.js?67f7f6cb0474995f6121d89b7e24ca4a",
+                // 生产环境
+                "proSrc": "https://hm.baidu.com/hm.js?a95ff97161599334035fb1f59a9b75a2"
+            }
+            var hm = document.createElement("script");
+            hm.src = env[arg];
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        }
+        // 默认测试环境  
+        setEnv();
+
+    })();
+
 
 </script>
 
