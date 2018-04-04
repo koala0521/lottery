@@ -117,10 +117,7 @@ JiuGongGeII.prototype = {
                     lottery.speed=100;
                     roll();    //转圈过程不响应click事件，会将click置为false
                     click=true; //一次抽奖完成后，设置click为true，可继续抽奖
-
-                    console.log( _this.limitTimes );
-                    
-                    $('#a-times').text(_this.limitTimes-1);
+                    // $('#a-times').text(_this.limitTimes-1);
                     _this.getPrize();
                     return false;
                 }
@@ -233,6 +230,8 @@ JiuGongGeII.prototype = {
                 // 请求成功
                 if (_this.resData.error_code == 0) {
                     _this.limitTimes = _this.resData.limitTimes;
+                    // 更新数据
+                    $('#a-times').text( _this.limitTimes );
                 }
             },
             success: function (result) {
