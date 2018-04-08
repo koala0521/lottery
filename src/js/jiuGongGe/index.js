@@ -20,19 +20,22 @@ window.lottery={
             this.$lottery.find(".lottery-unit-"+this.index).addClass("active");
         }
     },
+    // 默认动画效果
     autoPlay:function(){
         let _this = this;
         this.autoTimer = setInterval(function(){
             _this.index++;
-            _this.index = _this.index>=_this.count?0:_this.index;
+            _this.index = _this.index >= _this.count ? 0 : _this.index;
             _this.$lottery.find(".lottery-unit").removeClass("active");
             _this.$lottery.find(".lottery-unit-"+_this.index).addClass("active");
         },800)
     },
+    // 停止默认动画
     stopAutoPlay:function(){
         clearInterval(this.autoTimer);
         this.autoTimer = null;
     },
+    // 点击 "抽奖"
     roll:function(){
         let index = this.index;
         let count = this.count;
@@ -142,6 +145,7 @@ JiuGongGeII.prototype = {
         });
 
     },
+    // 初始化抽奖页面
     setDefault:function(){
         this.setCache();
         this.getTimes();
@@ -156,7 +160,7 @@ JiuGongGeII.prototype = {
                 _this.setClickAnalysis();
             },500)
         }else{
-            window._hmt.push(['_trackEvent', '九宫格','抽奖', 't8']);
+            window._hmt.push(['_trackEvent', '九宫格走马灯','抽奖', 't8']);
         }
     },
     setLimitAnalysis:function(){
@@ -166,9 +170,10 @@ JiuGongGeII.prototype = {
                 _this.setLimitAnalysis();
             },500)
         }else{
-            window._hmt.push(['_trackEvent', '九宫格-次数已用完','抽奖', 't8']);
+            window._hmt.push(['_trackEvent', '九宫格走马灯-次数已用完','抽奖', 't8']);
         }
     },
+    // 查询剩余抽奖次数
     getTimes:function(){    /*获取抽奖次数*/
         var _this = this;
         var deviceId = store.get('device_id') || this.getUrlItem('device_id');
@@ -196,6 +201,7 @@ JiuGongGeII.prototype = {
             });
         }
     },
+    // 设置缓存
     setCache:function(){    /*设置缓存*/
         for (var key in CFG){
             if (CFG[key] == '' && this.getUrlItem(key) != null) {
@@ -204,11 +210,16 @@ JiuGongGeII.prototype = {
             }
         }
     },
+    // 获取地址栏参数
     getUrlItem:function(name){
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
+
+        console.log(r);
+        
         if (r != null) return unescape(r[2]); return null;
     },
+    // 请求广告
     getPrize:function(){    /*抽中红包，获取奖项*/
         var _this = this;
 
@@ -235,32 +246,21 @@ JiuGongGeII.prototype = {
                 }
             },
             success: function (result) {
-                // if(result && result.error_code == 0){
-                //     _this.resData = result;
-                //     _this.showPrize();
-                // } else {
-                //     _this.getPrizeFail();
-                // }
-                // _this.ajaxing = false;
-                // if(result&&result.limitTimes){
-                //     _this.limitTimes = result.limitTimes
-                // }
+                console.log("请求成功");
             },
             error: function(err){
-                // _this.getPrizeFail();
-                // _this.ajaxing = false;
-                // if(err&&err.limitTimes){
-                //     _this.limitTimes = err.limitTimes
-                // }
+                console.log("请求失败");                
             }
         });
     },
+    // 查询奖品失败
     getPrizeFail:function(){
         if (this.resData['error_code'] && this.resData['limitTimes'] > 0 ){
             this.limitTimes = this.resData['limitTimes'];
         }
         this.showNoResult();
     },
+    // 展示抽中奖品
     showPrize:function(){
         var _this = this;
         var $popPosition = $('.pop-position ');
@@ -295,6 +295,7 @@ JiuGongGeII.prototype = {
         $popPosition.show();
 
     },
+    // 没有抽中提示
     showNoResult:function(){
         var $popPosition = $('.pop-position ');
         $popPosition.find('.prizes-no-cont').show();
@@ -302,6 +303,7 @@ JiuGongGeII.prototype = {
         $('.prizes-no-cont .prizes-no-img').attr('src','./dist/img/jiugongge/prizes-pop-fail.png');
         $popPosition.show();
     },
+    // 抽奖次数用完提示
     showLimited:function(){
         var $popPosition = $('.pop-position ');
         $popPosition.find('.prizes-no-cont').show();
@@ -309,6 +311,7 @@ JiuGongGeII.prototype = {
         $('.prizes-no-cont .prizes-no-img').attr('src','./dist/img/jiugongge/prizes-pop-no.png');
         $popPosition.show();
     },
+    // 关闭弹框
     hidePrize:function(){
         var $popPosition = $('.pop-position ');
         $popPosition.find('.prizes-no-cont').hide();
@@ -331,7 +334,8 @@ JiuGongGeII.prototype = {
             $('#contaner').append('<img class="clicktrace" src="'+ urlArray[j] +'" />');
         }
     },
-    getNetwork:function(){      /*获取网络环境*/
+    /*获取设备网络环境*/
+    getNetwork:function(){    
         var t = null,
             netType = 0
             , e = window.navigator.userAgent
@@ -362,6 +366,7 @@ JiuGongGeII.prototype = {
         }
         return netType;
     },
+    // 请求参数
     collReqData:function(){
         var reqData = {
             template_id: window.CFG['template_id'],
