@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Keywords" content="幸运大转盘" />
+    <meta name="Description" content="幸运大转盘" />
+    <meta name="screen-orientation" content="portrait">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>幸运翻牌</title>
+    <link rel="stylesheet" href="./dist/css/flipCard.css">
+    <script>
+    
+        var dpr = 1 / window.devicePixelRatio;
+        document.write('<meta name="viewport" content="width=device-width,user-scalable=no,,initial-scale='+dpr+',minimum-scale='+dpr+',maximum-scale='+dpr+'" />');
+
+    </script>
+
+</head>
+<body>
+<div class="g-wrapper g-cj">
+    <div class="g-cj-wrap">
+        
+        <div class="m-times">今日剩余次数：<span id="a-times">0</span> 次</div>
+
+        <div class="m-cj-box">
+            <div class="m-playarea">
+                <div class="m-flex" id="lottery">
+                    <div class="m-flex-item-prize-box lottery-unit lottery-unit-0">
+                        <div class="m-prize">
+                            <img src="./dist/img/flipCard/card.png">
+                        </div>
+                    </div>
+                    <div class="m-flex-item-prize-box lottery-unit lottery-unit-1">
+                        <div class="m-prize">
+                            <img src="./dist/img/flipCard/card.png">
+                        </div>
+                    </div>
+                    <div class="m-flex-item-prize-box lottery-unit lottery-unit-2">
+                        <div class="m-prize m-prize2">
+                                <img src="./dist/img/flipCard/card.png">
+                        </div>
+                    </div>
+                    <div class="m-flex-item-prize-box lottery-unit lottery-unit-7">
+                        <div class="m-prize m-prize2">
+                            <img src="./dist/img/flipCard/card.png">
+                        </div>
+                    </div>
+                    <div class="m-flex-item-prize-box lottery-unit lottery-unit-3">
+                            <div class="m-prize m-prize2">
+                                <img src="./dist/img/flipCard/card.png">
+                            </div>
+                    </div>
+                    <div class="m-flex-item-prize-box lottery-unit lottery-unit-3">
+                        <div class="m-prize m-prize2">
+                            <img src="./dist/img/flipCard/card.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="m-times">剩余次数：<span id="a-times">0</span> 次</div> -->
+
+    </div>
+
+    <!--  奖品列表  -->
+    <div class="prize-list" id="prize-list" style="display: block;">
+        <div class="prizes-wrapper">
+            <div class="prize-item" data-prize="true">
+                <div class="prize-img-box">
+                    <img class="prize-img" src="./dist/img/FlipCard/prize1.png">
+                </div>
+            </div>
+            <div class="prize-item">
+                <div class="prize-img-box">
+                    <img class="prize-img" src="./dist/img/FlipCard/prize2.png">
+                </div>
+            </div>
+            <div class="prize-item">
+                <div class="prize-img-box">
+                    <img class="prize-img" src="./dist/img/FlipCard/prize3.png">
+                </div>
+            </div>
+            <div class="prize-item">
+                <div class="prize-img-box">
+                    <img class="prize-img" src="./dist/img/FlipCard/prize5.png">
+                </div>
+            </div>
+            <div class="prize-item">
+                <div class="prize-img-box">
+                    <img class="prize-img" src="./dist/img/FlipCard/prize4.png">
+                </div>
+            </div>
+            <div class="prize-item" data-prize="no">
+                <div class="prize-img-box">
+                    <img class="prize-img" src="./dist/img/FlipCard/prize6.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="hdgg_show-win" class="pop-position" style="display: none;">
+    <div class="m-close close" ></div>
+    <div class="m-wrapper prizes-cont-box hdgg_result_show_animation " hidden="" style="display: none;">
+        <div class="m-box prizes-zoom-box">
+            <div class="m-image-wrap">
+                <div class="m-image-inner">
+                    <img src="" class="prizes-img">
+                </div>
+            </div>
+        </div>
+        <div class="m-name prizes-name"></div>
+        <div id="hdgg_click_ad_btn" data-u="" class="m-btn">立即领取</div>
+    </div>
+    <div class="no-results prizes-no-cont" style="display: block;">
+        <img src="./dist/img/jiugongge/prizes-pop-fail.png" class="prizes-no-img" alt="">
+        <img src="./dist/img/jiugongge/close-btn.png" class="close-btn coupon-modal-close">
+    </div>
+    <div id="contaner" class="traceContaner" style="display: none;"></div>
+</div>
+<script src="./plugin/store.js"></script>
+<script>
+ 
+    function setHTMLSize(){
+        var oHtml = document.querySelector('html');
+        var width = oHtml.getBoundingClientRect().width;
+        oHtml.style.fontSize = width / 15 + 'px';  
+    }
+    function windowResize(){
+        window.addEventListener('resize',function(){
+            setHTMLSize();
+        },false);
+    }
+
+    setHTMLSize();
+    windowResize();
+
+    window.CFG = {
+        template_id: '8',
+        device_id: '',
+        app_id:'',
+        adslot_id:''
+    };
+</script>
+
+<script src="./plugin/jquery-3.3.1.min.js"></script>
+<script src="./plugin/iscroll.js"></script>
+<script src="./dist/js/flipCard.js"></script>
+
+<script>
+
+    var _hmt = _hmt || [];
+    (function(){
+      
+        /**@argument  arg String;
+         * @value one of [ "testSrc" , "proSrc" ]
+         * @default "testSrc"
+         **/ 
+        function setEnv( arg ){
+
+            arg = arg || "testSrc";
+            var env = {
+                // 测试环境
+                "testSrc": "https://hm.baidu.com/hm.js?67f7f6cb0474995f6121d89b7e24ca4a",
+                // 生产环境
+                "proSrc": "https://hm.baidu.com/hm.js?a95ff97161599334035fb1f59a9b75a2"
+            }
+            var hm = document.createElement("script");
+            hm.src = env[arg];
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        }
+        // 默认测试环境  
+        // setEnv();
+        
+        // 线上环境
+        // setEnv("proSrc");
+    })();
+
+    window.onblur =function(){
+        console.log( "离开页面了" );
+        
+    }
+    window.onfocus =function(){
+        console.log( "进入页面了" );    
+    }
+
+    // window.onbeforeunload = function(e){
+    //     e = e || window.event;
+    //     if( e ){
+    //         e.returnValue = "关闭提示";
+    //     }
+    //     return "关闭提示";
+    // }
+
+</script>
+
+
+</body>
+</html>

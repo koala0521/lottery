@@ -20,6 +20,9 @@ var fishLessRoot = srcRoot + 'less/fish/';
 var jiugonggeJsRoot = srcRoot + 'js/jiuGongGe/';
 var jiugonggeLessRoot = srcRoot + 'less/jiugongge/';
 
+// 幸运翻牌
+var flipCardJsRoot = srcRoot + 'js/flipCard/';
+var flipCardLessRoot = srcRoot + 'less/flipCard/';
 
 var path = require('path');
 
@@ -81,5 +84,13 @@ module.exports = {
         ],
         jsWatch: jiugonggeJsRoot + '**/*.js'
 
+    },
+    flipCard:{
+        less:flipCardLessRoot + 'index.less',
+        lessWatch:flipCardLessRoot +  '**/*.less',
+        js:[
+            flipCardJsRoot + 'index.js'
+        ],
+        jsWatch:flipCardJsRoot + '**/*.js'
     }
 };
