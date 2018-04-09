@@ -33,7 +33,7 @@ body {
   
   .g-cj-wrap {
     position: relative;
-    margin: 350/@rem auto 0;
+    margin: 300/@rem auto 0;
     width: 682.5/@rem;
     height: 800/@rem;
     background-size: cover;
@@ -53,7 +53,7 @@ body {
   }
 
   .m-cj-box {
-    margin: 64/@rem auto 0;
+    margin: 25/@rem auto 0;
     // padding: 15/@rem;
     // padding-top: 25/@rem;
     width: 630/@rem;
@@ -112,39 +112,39 @@ body {
   margin-bottom:20/@rem ;
 //   width:170/@rem;
   width: 30%;
-  height:250/@rem;
-  overflow:hidden;
-  border-radius: 40/@rem;
+  height: 225/@rem;
+  // overflow:hidden;
+  // border-radius: 25/@rem;
   // 解决 安卓小于 4.3 不支持 弹性布局
   display: inline-block;
   padding: 8/@rem;
   transition: none;
-  &:before{
-    content:" ";
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    //background-color:#2680f1;
-    // background-color:rgba(0,0,0,0.3);
-  }
+  transform-style: preserve-3d;
+  transform-origin: center;
+
   &.active{
 
-    transition: linear 500ms;
+    transition: linear 800ms;
     transform: rotateY(180deg);
-    transform-origin: center;
   }
 
   .m-prize {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    // border-radius: 20.6/@rem;
+    position: absolute;
+    border-radius: 25/@rem;
+    left: 0;
+    top: 0;
     img {
       width: 100%;
       height: 100%;
     }
+  }
+  .m-prize-back{
+    transform-origin: center;
+    transform: rotateY(-180deg);
+    backface-visibility: hidden;
   }
 
   &.m-prize-transition-scale {
@@ -161,7 +161,7 @@ body {
 .prize-list {
     width: 750/@rem;
     position: absolute;
-    top: 1140/@rem;
+    bottom: 5/@rem;
     touch-action: none;
     padding: 20/@rem 0;
     text-align: center;
@@ -178,6 +178,7 @@ body {
       overflow: hidden;
       width: 155/@rem;
       height: 155/@rem;
+      position: relative;
     }
     .prize-item{
       position: relative;
