@@ -127,6 +127,12 @@ body {
     transition: linear 800ms;
     transform: rotateY(180deg);
   }
+  &.active .m-prize{
+    opacity: 0;
+  }
+  &.active .m-prize-back{
+    opacity: 1;
+  }
 
   .m-prize {
     width: 100%;
@@ -136,6 +142,7 @@ body {
     border-radius: 25/@rem;
     left: 0;
     top: 0;
+    transition: 1000ms;
     img {
       width: 100%;
       height: 100%;
