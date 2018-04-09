@@ -85,6 +85,19 @@ gulp.task('build-less-jiuGongGe',function(){
         ;
 });
 
+// 幸运翻牌
+gulp.task('build-less-flipCard',function(){
+    return gulp.src(paths.flipCard.less)
+        .pipe(plumber())
+        .pipe(sourcemaps.init())
+        .pipe(less())
+        .pipe(rename('flipCard.css'))
+        .pipe(postcss([ autoprefixer() ]))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest(paths.lessDist))
+        ;
+});
+
 
 //图片编译
 gulp.task('build-img',function(){
@@ -166,6 +179,22 @@ var jiugonggeBundler = Bundler({
     ]
 });
 
+// 幸运翻牌
+var flipCardBundler = Bundler({
+    entries: [paths.flipCard.js],
+    dest: paths.jsDist,
+    filename:'flipCard.js',
+    transform: [
+        ["babelify",{presets: ["es2015"]}],
+        [stringify, {
+            appliesTo: { includeExtensions: ['.html'] }
+        }]
+    ]
+});
+
+
+/***********************/ 
+
 gulp.task('build-js-redRain',function(){
     return redRainBundler.bundle();
 });
@@ -216,6 +245,16 @@ gulp.task('watch-js-jiuGongGe',function(){
     return jiugonggeBundler.watch();
 });
 
+// 幸运翻牌
+gulp.task('build-js-flipCard',function(){
+    return flipCardBundler.bundle();
+});
+gulp.task('watch-js-flipCard',function(){
+
+    return flipCardBundler.watch();
+});
+
+
 gulp.task('build',function(callback){
     return runSequence(
         'clean',
@@ -232,6 +271,8 @@ gulp.task('build',function(callback){
             ,'build-less-fish'
             ,'build-js-jiuGongGe'
             ,'build-less-jiuGongGe'
+            ,'build-js-flipCard'
+            ,'build-less-flipCard'
             ,'build-img'
         ],
         callback

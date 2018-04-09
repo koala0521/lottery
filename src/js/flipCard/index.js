@@ -3,125 +3,58 @@ var events = require('events');
 var eventEmitter = new events.EventEmitter();
 
 window.lottery={
-    index:-1,    //当前转动到哪个位置，起点位置
-    count:0,    //总共有多少个位置
-    timer:0,    //setTimeout的ID，用clearTimeout清除
-    autoTimer:0,    //自动播放的id
-    speed:20,    //初始转动速度
-    times:0,    //转动次数
-    cycle:50,    //转动基本次数：即至少需要转动多少次再进入抽奖环节
     prize:-1,    //中奖位置
     init:function(id){
-        if ($("#"+id).find(".lottery-unit").length>0) {
-            this.$lottery = $("#"+id);
-            this.$units = this.$lottery.find(".lottery-unit");
-            this.obj = this.$lottery;
-            this.count = this.$units.length;
-            this.$lottery.find(".lottery-unit-"+this.index).addClass("active");
-        }
-    },
-    // 默认动画效果
-    autoPlay:function(){
-        let _this = this;
-        this.autoTimer = setInterval(function(){
-            _this.index++;
-            _this.index = _this.index >= _this.count ? 0 : _this.index;
-            _this.$lottery.find(".lottery-unit").removeClass("active");
-            _this.$lottery.find(".lottery-unit-"+_this.index).addClass("active");
-        },800)
-    },
-    // 停止默认动画
-    stopAutoPlay:function(){
-        clearInterval(this.autoTimer);
-        this.autoTimer = null;
-    },
-    // 点击 "抽奖" 动画效果
-    roll:function(){
-        let index = this.index;
-        let count = this.count;
-        let lotteryObj = this.obj;
-        $(lotteryObj).find(".lottery-unit-"+index).removeClass("active");
-        index += 1;
-        if (index>count-1) {
-            index = 0;
-        }
-        $(lotteryObj).find(".lottery-unit-"+index).addClass("active");
-        this.index=index;
-        return false;
-    },
-    stop:function(index){
-        this.prize=index;
-        return false;
     }
 };
 // 抽奖逻辑处理
 function roll(){
-    lottery.times += 1;
-    lottery.roll();//转动过程调用的是lottery的roll方法，这里是第一次调用初始化
-    if (lottery.times > lottery.cycle+10 && lottery.prize==lottery.index) {
-        clearTimeout(lottery.timer);
 
-        //抽到奖-停止转动
-        eventEmitter.emit('showPriseResult');
-
-    }else{
-        if (lottery.times<lottery.cycle) {
-            lottery.speed -= 10;
-        }else if(lottery.times==lottery.cycle) {
-            // var index = Math.random()*(lottery.count)|0;
-            var index = Math.random() - 0.5 > 0 ? 2 : 7;
-            lottery.prize = index;
-        }else{
-            if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
-                lottery.speed += 110;
-            }else{
-                lottery.speed += 20;
-            }
-        }
-        if (lottery.speed<40) {
-            lottery.speed=40;
-        }
-        lottery.timer = setTimeout(roll,lottery.speed);//循环调用
-    }
-    return false;
+    // //抽到奖-停止转动
+    // eventEmitter.emit('showPriseResult');
 }
+
 
 var click=false;
 
 
-window.JiuGongGeII = function(){
+window.FlipCard = function(){
 
-    this.limitTimes = null;     //允许转动的次数；
+    this.limitTimes = null;     //剩余抽奖次数；
     this.resData = null;
     this.netTypeArray = ["undefined", "ethernet", "wifi", "edge", "2g", "3g","4g"];
 
+    console.log( "初始化" );
     this.init();
 };
-JiuGongGeII.prototype = {
-    constructor: JiuGongGeII,
+FlipCard.prototype = {
+    constructor: FlipCard,
     init: function () {
         this.setDefault(); //进入重置效果
         this.bindEvent();
     },
     bindEvent:function(){
         let _this = this;
-
-        $("#j-start").on("click", function() {
+        
+        $(".m-flex-item-prize-box").on("click", function() {
+            
             if (click) {//click控制一次抽奖过程中不能重复点击抽奖按钮，后面的点击不响应
+
                 return false;
             }else{
 
-                lottery.stopAutoPlay();
-                if(!_this.limitTimes||_this.limitTimes<=0){
+                $(this).addClass("active");
+                return
+
+                if( !_this.limitTimes || _this.limitTimes <= 0 ){
                     _this.showLimited();
                     _this.setLimitAnalysis();
                 }else{
                     _this.setClickAnalysis();
-                    lottery.speed=100;
-                    roll();    //转圈过程不响应click事件，会将click置为false
+
                     click=true; //一次抽奖完成后，设置click为true，可继续抽奖
-                    // $('#a-times').text(_this.limitTimes-1);
                     _this.getPrize();
+
                     return false;
                 }
             }
@@ -129,15 +62,16 @@ JiuGongGeII.prototype = {
 
         eventEmitter.on('showPriseResult',function(){
             setTimeout(function(){
+
                 let result = _this.resData;
                 if(result && result.error_code == 0){
                     _this.showPrize();
                 } else {
                     _this.getPrizeFail();
                 }
+
             },500)
         });
-
 
         //关闭弹窗
         $('.pop-position').on('touchstart','.close,.close-btn',function(){
@@ -149,9 +83,10 @@ JiuGongGeII.prototype = {
     setDefault:function(){
         this.setCache();
         this.getTimes();
+        this.iScrollInit();
         lottery.init('lottery');
 
-        lottery.autoPlay();
+        // lottery.autoPlay();
     },
     setClickAnalysis:function(){
         let _this = this;
@@ -173,8 +108,16 @@ JiuGongGeII.prototype = {
             window._hmt.push(['_trackEvent', '九宫格走马灯-次数已用完','抽奖', 't8']);
         }
     },
+    iScrollInit: function iScrollInit() {
+        var $item = $('#prize-list').find('.prize-item');
+        if ($item.length > 5) {
+            window.myScroll = new IScroll('#prize-list', {
+                scrollX: true
+            });
+        }
+    },
     // 查询剩余抽奖次数
-    getTimes:function(){    /*获取抽奖次数*/
+    getTimes:function(){   
         var _this = this;
         var deviceId = store.get('device_id') || this.getUrlItem('device_id');
 
@@ -219,8 +162,8 @@ JiuGongGeII.prototype = {
         
         if (r != null) return unescape(r[2]); return null;
     },
-    // 请求广告
-    getPrize:function(){    /*抽中红包，获取奖项*/
+    // 抽中红包，获取奖项  > 请求广告
+    getPrize:function(){   
         var _this = this;
 
         this.resData = {};
@@ -317,7 +260,7 @@ JiuGongGeII.prototype = {
         $popPosition.find('.prizes-no-cont').hide();
         $popPosition.find('.prizes-cont-box').removeClass('hdgg_result_show_animation').addClass('hdgg_result_hide_animation');
         $popPosition.fadeOut();
-        lottery.autoPlay();
+        // lottery.autoPlay();
         lottery.prize=-1;
         lottery.times=0;
         click=false;
@@ -382,8 +325,7 @@ JiuGongGeII.prototype = {
     }
 };
 
-
-new JiuGongGeII();
+new FlipCard();
 
 
 

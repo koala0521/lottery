@@ -13,6 +13,7 @@ gulp.task('watch',[
     ,'watch-js-luckyDice'
     ,'watch-js-fish'
     ,'watch-js-jiuGongGe'
+    ,'watch-js-flipCard'
 ],function(){
   
   gulp.watch(paths.redRain.lessWatch,['build-less-redRain']).on('change',reportChange);
@@ -22,6 +23,9 @@ gulp.task('watch',[
   gulp.watch(paths.fish.lessWatch,['build-less-fish']).on('change',reportChange);
   // 九宫格新版
   gulp.watch(paths.jiuGongGe.lessWatch,['build-less-jiuGongGe']).on('change',reportChange);
+  // 幸运翻牌
+  gulp.watch(paths.flipCard.lessWatch,['build-less-flipCard']).on('change',reportChange);
+
 
   gulp.watch(paths.img,['build-img']).on('change',reportChange);
 });
