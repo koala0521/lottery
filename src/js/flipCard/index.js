@@ -7,16 +7,8 @@ window.lottery={
     init:function(id){
     }
 };
-// 抽奖逻辑处理
-function roll(){
-
-    // //抽到奖-停止转动
-    // eventEmitter.emit('showPriseResult');
-}
-
 
 var click=false;
-
 
 window.FlipCard = function(){
 
@@ -24,7 +16,6 @@ window.FlipCard = function(){
     this.resData = null;
     this.netTypeArray = ["undefined", "ethernet", "wifi", "edge", "2g", "3g","4g"];
 
-    console.log( "初始化" );
     this.init();
 };
 FlipCard.prototype = {
@@ -43,18 +34,14 @@ FlipCard.prototype = {
                 return false;
             }else{
 
-                $(this).addClass("active");
-                return
-
+                // 没有抽奖次数提示
                 if( !_this.limitTimes || _this.limitTimes <= 0 ){
                     _this.showLimited();
                     _this.setLimitAnalysis();
                 }else{
                     _this.setClickAnalysis();
-
                     click=true; //一次抽奖完成后，设置click为true，可继续抽奖
                     _this.getPrize();
-
                     return false;
                 }
             }
@@ -85,8 +72,6 @@ FlipCard.prototype = {
         this.getTimes();
         this.iScrollInit();
         lottery.init('lottery');
-
-        // lottery.autoPlay();
     },
     setClickAnalysis:function(){
         let _this = this;
@@ -95,7 +80,7 @@ FlipCard.prototype = {
                 _this.setClickAnalysis();
             },500)
         }else{
-            window._hmt.push(['_trackEvent', '九宫格走马灯','抽奖', 't8']);
+            window._hmt.push(['_trackEvent', '幸运翻牌','抽奖', 't9']);
         }
     },
     setLimitAnalysis:function(){
@@ -105,7 +90,7 @@ FlipCard.prototype = {
                 _this.setLimitAnalysis();
             },500)
         }else{
-            window._hmt.push(['_trackEvent', '九宫格走马灯-次数已用完','抽奖', 't8']);
+            window._hmt.push(['_trackEvent', '幸运翻牌-次数已用完','抽奖', 't9']);
         }
     },
     iScrollInit: function iScrollInit() {
@@ -186,13 +171,17 @@ FlipCard.prototype = {
                     _this.limitTimes = _this.resData.limitTimes;
                     // 更新数据
                     $('#a-times').text( _this.limitTimes );
+                    // 翻牌
+                    $(this).addClass("active");
                 }
             },
             success: function (result) {
                 console.log("请求成功");
             },
             error: function(err){
-                console.log("请求失败");                
+                console.log("请求失败");   
+                click = false;             
+                _this.showNetError();
             }
         });
     },
@@ -243,7 +232,7 @@ FlipCard.prototype = {
         var $popPosition = $('.pop-position ');
         $popPosition.find('.prizes-no-cont').show();
         $popPosition.find('.prizes-cont-box').hide();
-        $('.prizes-no-cont .prizes-no-img').attr('src','./dist/img/jiugongge/prizes-pop-fail.png');
+        $('.prizes-no-cont .prizes-no-img').attr('src','./dist/img/flipCard/prizes-pop-fail.png');
         $popPosition.show();
     },
     // 抽奖次数用完提示
@@ -251,7 +240,15 @@ FlipCard.prototype = {
         var $popPosition = $('.pop-position ');
         $popPosition.find('.prizes-no-cont').show();
         $popPosition.find('.prizes-cont-box').hide();
-        $('.prizes-no-cont .prizes-no-img').attr('src','./dist/img/jiugongge/prizes-pop-no.png');
+        $('.prizes-no-cont .prizes-no-img').attr('src','./dist/img/flipCard/prizes-pop-no.png');
+        $popPosition.show();
+    },
+    // 网络错误提示
+    showNetError:function(){
+        var $popPosition = $('.pop-position ');
+        $popPosition.find('.prizes-no-cont').show();
+        $popPosition.find('.prizes-cont-box').hide();
+        $('.prizes-no-cont .prizes-no-img').attr('src','./dist/img/flipCard/prizes-pop-error.png');
         $popPosition.show();
     },
     // 关闭弹框
