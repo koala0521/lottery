@@ -4,7 +4,22 @@ var eventEmitter = new events.EventEmitter();
 
 window.lottery={
     prize:-1,    //中奖位置
-    init:function(id){
+    init:function(){
+        var _this = this;
+        
+        setTimeout(()=>{       
+            this.handMove();
+        },300);
+    },
+    // 小手的动画效果
+    handMove(){
+        
+        let handWrasp = $(".g-hand-wrap");
+        handWrasp.addClass("active");
+        // 隐藏小手提示
+        setTimeout(()=>{
+            handWrasp.removeClass("active");
+        },3000);
     }
 };
 
@@ -71,7 +86,7 @@ FlipCard.prototype = {
         this.setCache();
         this.getTimes();
         this.iScrollInit();
-        lottery.init('lottery');
+        lottery.init();
     },
     setClickAnalysis:function(){
         let _this = this;
