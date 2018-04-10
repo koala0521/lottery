@@ -64,6 +64,7 @@ body {
     .m-playarea {
       width: 100%;
       height: 100%;
+      position: relative;
       .m-flex {
         display: -webkit-box;
         display: -webkit-flex;
@@ -93,21 +94,19 @@ body {
       }            
       .g-hand-wrap{
         position: absolute;
-        left: 110%;
-        top: 35%;
+        left: 80%;
+        top: -30%;
         width: 150/@rem;
         height: 150/@rem;
         transform-style: preserve-3d;
         transition: none;
-        transition: ease-in-out 800ms;
         img{
           width: 100%;
           height: 100%;       
         }
       }
       .g-hand-wrap.active{
-        left: 50%;
-        transform: translateX(-10%);
+        transition: ease-in-out 800ms;
         img{
 
           animation: handScale 1s infinite; 
@@ -432,7 +431,7 @@ body {
   }
 
   to {
-    transform: scale(1.1);
+    transform: scale(0.9);
   } 
 }
 

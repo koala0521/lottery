@@ -4,22 +4,55 @@ var eventEmitter = new events.EventEmitter();
 
 window.lottery={
     prize:-1,    //中奖位置
+    timer:null,
     init:function(){
         var _this = this;
         
         setTimeout(()=>{       
-            this.handMove();
+            this.handMove(99999999999);
         },300);
     },
     // 小手的动画效果
-    handMove(){
-        
+    handMove( time ){        
         let handWrasp = $(".g-hand-wrap");
         handWrasp.addClass("active");
         // 隐藏小手提示
         setTimeout(()=>{
             handWrasp.removeClass("active");
-        },3000);
+            handWrasp.css({
+                left: "80%",
+                top:"-30%"
+           });
+        },time);
+    },
+    // 牌子恢复默认效果
+    defaultCards(){
+        let cards = $(".m-flex-item-prize-box");
+        cards.each(( index , element) => {
+            $(element).removeClass("active");
+        });
+    },
+
+    // 点击翻牌动画
+    clickAndTurnCard( el ){
+        console.log( el.offsetLeft , el.offsetTop, el.offsetWidth , el.offsetHeight );
+
+        let handWrasp = $(".g-hand-wrap");
+
+        handWrasp.css({
+            
+            transition: "ease-in-out 800ms",
+            left:( el.offsetLeft + el.offsetWidth / 2 ) + "px",
+            top: ( el.offsetTop + el.offsetHeight / 2 ) + "px"
+        });
+        // 点击效果
+        setTimeout(()=>{            
+            this.handMove(800);
+            // 翻牌
+            setTimeout(()=>{
+                $(el).addClass("active");
+            },800);
+        }, 800);
     }
 };
 
@@ -43,17 +76,20 @@ FlipCard.prototype = {
         let _this = this;
         
         $(".m-flex-item-prize-box").on("click", function() {
-            
+
             if (click) {//click控制一次抽奖过程中不能重复点击抽奖按钮，后面的点击不响应
 
                 return false;
             }else{
-
+                
                 // 没有抽奖次数提示
                 if( !_this.limitTimes || _this.limitTimes <= 0 ){
+
                     _this.showLimited();
                     _this.setLimitAnalysis();
+
                 }else{
+
                     _this.setClickAnalysis();
                     click=true; //一次抽奖完成后，设置click为true，可继续抽奖
                     _this.getPrize();
@@ -186,8 +222,10 @@ FlipCard.prototype = {
                     _this.limitTimes = _this.resData.limitTimes;
                     // 更新数据
                     $('#a-times').text( _this.limitTimes );
-                    // 翻牌
-                    $(this).addClass("active");
+                    
+                    // 抽奖动作
+                    lottery.clickAndTurnCard( this );
+
                 }
             },
             success: function (result) {
@@ -276,6 +314,7 @@ FlipCard.prototype = {
         lottery.prize=-1;
         lottery.times=0;
         click=false;
+        lottery.defaultCards();
     },
     showLog:function(urlArray){
         if (urlArray.length < 1 ) return;
