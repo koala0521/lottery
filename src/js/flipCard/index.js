@@ -81,7 +81,7 @@ FlipCard.prototype = {
 
                 return false;
             }else{
-                
+
                 // 没有抽奖次数提示
                 if( !_this.limitTimes || _this.limitTimes <= 0 ){
 
@@ -221,11 +221,9 @@ FlipCard.prototype = {
                 if (_this.resData.error_code == 0) {
                     _this.limitTimes = _this.resData.limitTimes;
                     // 更新数据
-                    $('#a-times').text( _this.limitTimes );
-                    
+                    $('#a-times').text( _this.limitTimes );                    
                     // 抽奖动作
                     lottery.clickAndTurnCard( this );
-
                 }
             },
             success: function (result) {
