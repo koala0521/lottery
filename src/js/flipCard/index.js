@@ -35,7 +35,6 @@ window.lottery={
 
     // 点击翻牌动画
     clickAndTurnCard( el ){
-        console.log( el.offsetLeft , el.offsetTop, el.offsetWidth , el.offsetHeight );
 
         let handWrasp = $(".g-hand-wrap");
 
@@ -51,6 +50,8 @@ window.lottery={
             // 翻牌
             setTimeout(()=>{
                 $(el).addClass("active");
+                //展示结果
+                eventEmitter.emit('showPriseResult');
             },800);
         }, 800);
     }
@@ -92,12 +93,12 @@ FlipCard.prototype = {
 
                     _this.setClickAnalysis();
                     click=true; //一次抽奖完成后，设置click为true，可继续抽奖
-                    _this.getPrize();
+                    _this.getPrize( this );
                     return false;
                 }
             }
         });
-
+        // 自定义事件 -- 抽奖完成
         eventEmitter.on('showPriseResult',function(){
             setTimeout(function(){
 
@@ -199,7 +200,7 @@ FlipCard.prototype = {
         if (r != null) return unescape(r[2]); return null;
     },
     // 抽中红包，获取奖项  > 请求广告
-    getPrize:function(){   
+    getPrize:function( el ){   
         var _this = this;
 
         this.resData = {};
@@ -222,9 +223,12 @@ FlipCard.prototype = {
                     _this.limitTimes = _this.resData.limitTimes;
                     // 更新数据
                     $('#a-times').text( _this.limitTimes );                    
-                    // 抽奖动作
-                    lottery.clickAndTurnCard( this );
+                }else{
+                      
+                    _this.showNetError();
                 }
+                // 抽奖动作
+                lottery.clickAndTurnCard( el );
             },
             success: function (result) {
                 console.log("请求成功");
@@ -251,7 +255,6 @@ FlipCard.prototype = {
         var $countZa = $('#a-times');
         this.limitTimes = this.resData&&this.resData.limitTimes;
         $countZa.text(this.limitTimes||0);
-
 
         //请求成功，发送检波
         if (_this.resData['adms']) {
