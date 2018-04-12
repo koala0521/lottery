@@ -310,6 +310,9 @@ FlipCard.prototype = {
         $popPosition.find('.prizes-cont-box').removeClass('hdgg_result_show_animation').addClass('hdgg_result_hide_animation');
         $popPosition.fadeOut();
         // lottery.autoPlay();
+        // 小手恢复闪动
+        $(".g-hand-wrap").addClass("active");
+        
         lottery.prize=-1;
         lottery.times=0;
         click=false;
