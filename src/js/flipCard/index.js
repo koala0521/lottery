@@ -219,16 +219,14 @@ FlipCard.prototype = {
                 }
                 _this.resData = XMLHttpRequest.responseJSON||{};
                 // 请求成功
-                if (_this.resData.error_code == 0) {
+                if ( _this.resData.error_code == 0 || _this.resData.error_code == 6 ) {
                     _this.limitTimes = _this.resData.limitTimes;
                     // 更新数据
-                    $('#a-times').text( _this.limitTimes );                    
-                }else{
-                      
-                    _this.showNetError();
+                    $('#a-times').text( _this.limitTimes ); 
+                    // 抽奖动作
+                    lottery.clickAndTurnCard( el );                   
                 }
-                // 抽奖动作
-                lottery.clickAndTurnCard( el );
+
             },
             success: function (result) {
                 console.log("请求成功");
