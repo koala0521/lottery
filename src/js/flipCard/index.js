@@ -217,16 +217,17 @@ FlipCard.prototype = {
                     _this.getPrizeFail();
                     click = false;
                 }
-                _this.resData = XMLHttpRequest.responseJSON||{};
-                // 请求成功
-                if ( _this.resData.error_code == 0 || _this.resData.error_code == 6 ) {
-                    _this.limitTimes = _this.resData.limitTimes;
-                    // 更新数据
-                    $('#a-times').text( _this.limitTimes ); 
-                    // 抽奖动作
-                    lottery.clickAndTurnCard( el );                   
-                }
 
+                // 请求完成，处理结果
+                _this.completeCallback( XMLHttpRequest.responseJSON || {} , el );
+
+                // _this.resData = XMLHttpRequest.responseJSON||{};
+                
+                // _this.limitTimes = _this.resData.limitTimes || _this.limitTimes;
+                // // 更新数据
+                // $('#a-times').text( _this.limitTimes ); 
+                // // 抽奖动作
+                // lottery.clickAndTurnCard( el );                   
             },
             success: function (result) {
                 console.log("请求成功");
@@ -237,6 +238,20 @@ FlipCard.prototype = {
                 _this.showNetError();
             }
         });
+    },
+
+    // 请求完成回调：包含有奖品。无奖品，请求出错情况
+    completeCallback( args , el ){
+        
+        var _this = this;
+
+        _this.resData = args;
+                
+        _this.limitTimes = _this.resData.limitTimes || _this.limitTimes;
+        // 更新数据
+        $('#a-times').text( _this.limitTimes ); 
+        // 抽奖动作
+        lottery.clickAndTurnCard( el );   
     },
     // 查询奖品失败
     getPrizeFail:function(){
